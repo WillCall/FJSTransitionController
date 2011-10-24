@@ -248,6 +248,7 @@ static NSMutableDictionary* _controllers = nil;
 @synthesize viewControllerKeyHistory;
 @synthesize isTransitioning;
 @synthesize delegate;
+@synthesize transitionDuration;
 
 
 + (void)load{
@@ -590,6 +591,14 @@ static NSMutableDictionary* _controllers = nil;
         
     }
     
+    float duration;
+    
+    if (self.transitionDuration) {
+        duration = self.transitionDuration;
+    } else {
+        duration = 0.75;
+    }
+    
     FJTransitionControllerMetaData* metadata = [self _metaDataForKey:key];
     UIViewController* vc = metadata.viewController;
     UIViewController* viewControllerToDisplay = [metadata viewControllerToDisplay];
@@ -637,7 +646,7 @@ static NSMutableDictionary* _controllers = nil;
             
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 
-                [UIView animateWithDuration:0.75 
+                [UIView animateWithDuration:duration 
                                       delay:0.0 
                                     options:0 
                                  animations:^(void) {

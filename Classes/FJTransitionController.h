@@ -65,11 +65,12 @@ void setViewControllerCenterPoint(FJPosition position, UIViewController* viewcon
     NSMutableArray* viewControllerKeyHistory;
 	
 	BOOL isTransitioning;
-    
+        
     id<FJTransitionControllerDelegate> delegate;
 
 }
 @property (nonatomic, assign) id<FJTransitionControllerDelegate> delegate;
+@property (nonatomic) NSTimeInterval transitionDuration;
 
 /****************************************************************************/
 /* 
