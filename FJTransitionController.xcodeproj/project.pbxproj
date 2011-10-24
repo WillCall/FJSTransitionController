@@ -20,6 +20,9 @@
 		C4F713D2114C201000517517 /* DummyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F713D0114C201000517517 /* DummyViewController.xib */; };
 		C4F713E5114C210500517517 /* AnotherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F713E3114C210500517517 /* AnotherViewController.m */; };
 		C4F713E6114C210500517517 /* AnotherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4F713E4114C210500517517 /* AnotherViewController.xib */; };
+		CEE1FB321455F132002F82E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C45CD4A51210EDDE00517E00 /* Foundation.framework */; };
+		CEE1FB381455F132002F82E3 /* libFJTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE1FB371455F132002F82E3 /* libFJTransitionController.m */; };
+		CEE1FB3D1455F139002F82E3 /* FJTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* FJTransitionController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,10 @@
 		C4F713E2114C210500517517 /* AnotherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnotherViewController.h; sourceTree = "<group>"; };
 		C4F713E3114C210500517517 /* AnotherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherViewController.m; sourceTree = "<group>"; };
 		C4F713E4114C210500517517 /* AnotherViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnotherViewController.xib; sourceTree = "<group>"; };
+		CEE1FB311455F132002F82E3 /* liblibFJTransitionController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibFJTransitionController.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEE1FB351455F132002F82E3 /* libFJTransitionController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "libFJTransitionController-Prefix.pch"; sourceTree = "<group>"; };
+		CEE1FB361455F132002F82E3 /* libFJTransitionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libFJTransitionController.h; sourceTree = "<group>"; };
+		CEE1FB371455F132002F82E3 /* libFJTransitionController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libFJTransitionController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +63,14 @@
 				C45CD4A41210EDDE00517E00 /* CoreFoundation.framework in Frameworks */,
 				C45CD4A61210EDDE00517E00 /* Foundation.framework in Frameworks */,
 				C45CD4A81210EDDE00517E00 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE1FB2E1455F132002F82E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE1FB321455F132002F82E3 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* FJTransitionController.app */,
+				CEE1FB311455F132002F82E3 /* liblibFJTransitionController.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +110,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				CEE1FB331455F132002F82E3 /* libFJTransitionController */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -130,7 +147,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CEE1FB331455F132002F82E3 /* libFJTransitionController */ = {
+			isa = PBXGroup;
+			children = (
+				CEE1FB361455F132002F82E3 /* libFJTransitionController.h */,
+				CEE1FB371455F132002F82E3 /* libFJTransitionController.m */,
+				CEE1FB341455F132002F82E3 /* Supporting Files */,
+			);
+			path = libFJTransitionController;
+			sourceTree = "<group>";
+		};
+		CEE1FB341455F132002F82E3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CEE1FB351455F132002F82E3 /* libFJTransitionController-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CEE1FB2F1455F132002F82E3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* FJTransitionController */ = {
@@ -150,6 +195,23 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* FJTransitionController.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CEE1FB301455F132002F82E3 /* libFJTransitionController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEE1FB3B1455F132002F82E3 /* Build configuration list for PBXNativeTarget "libFJTransitionController" */;
+			buildPhases = (
+				CEE1FB2D1455F132002F82E3 /* Sources */,
+				CEE1FB2E1455F132002F82E3 /* Frameworks */,
+				CEE1FB2F1455F132002F82E3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libFJTransitionController;
+			productName = libFJTransitionController;
+			productReference = CEE1FB311455F132002F82E3 /* liblibFJTransitionController.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -167,6 +229,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* FJTransitionController */,
+				CEE1FB301455F132002F82E3 /* libFJTransitionController */,
 			);
 		};
 /* End PBXProject section */
@@ -194,6 +257,15 @@
 				28D7ACF80DDB3853001CB0EB /* FJTransitionController.m in Sources */,
 				C4F713D1114C201000517517 /* DummyViewController.m in Sources */,
 				C4F713E5114C210500517517 /* AnotherViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEE1FB2D1455F132002F82E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE1FB381455F132002F82E3 /* libFJTransitionController.m in Sources */,
+				CEE1FB3D1455F139002F82E3 /* FJTransitionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +328,52 @@
 			};
 			name = Release;
 		};
+		CEE1FB391455F132002F82E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/libFJTransitionController.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "libFJTransitionController/libFJTransitionController-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CEE1FB3A1455F132002F82E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/libFJTransitionController.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "libFJTransitionController/libFJTransitionController-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -276,6 +394,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CEE1FB3B1455F132002F82E3 /* Build configuration list for PBXNativeTarget "libFJTransitionController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE1FB391455F132002F82E3 /* Debug */,
+				CEE1FB3A1455F132002F82E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
