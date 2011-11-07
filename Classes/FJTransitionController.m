@@ -551,8 +551,10 @@ static NSMutableDictionary* _controllers = nil;
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             
             [viewControllerToRemove viewDidDisappear:YES];
-            [viewControllerToDisplay viewDidAppear:YES];
-            
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+                [viewControllerToDisplay viewDidAppear:YES];
+            }
+
             //Unlock Transition Controller
             self.isTransitioning = NO;
             
@@ -642,7 +644,9 @@ static NSMutableDictionary* _controllers = nil;
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             
             [viewControllerToRemove viewDidDisappear:YES];
-            [viewControllerToDisplay viewDidAppear:YES];
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+                [viewControllerToDisplay viewDidAppear:YES];
+            }
             
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 
