@@ -72,8 +72,6 @@ void setViewControllerCenterPoint(FJPosition position, UIViewController* viewcon
     viewcontroller.view.center = offScreenPoint;
 }
 
-
-
 static NSMutableDictionary* _controllers = nil;
 
 @interface UIViewController (SetFJTransitionController)
@@ -249,7 +247,7 @@ static NSMutableDictionary* _controllers = nil;
 @synthesize isTransitioning;
 @synthesize delegate;
 @synthesize transitionDuration;
-
+@synthesize timerBlock;
 
 + (void)load{
         
@@ -679,6 +677,107 @@ static NSMutableDictionary* _controllers = nil;
         
     });
     
+}
+
+// Really fun, custom CAAnimations
+- (void)loadViewControllerForKey:(NSString*)key
+              appearingViewOnTop:(BOOL)viewOnTop
+                      setupBlock:(void (^)(UIViewController* appearingViewController))setupBlock 
+          appearingViewAnimation:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimation 
+       disappearingViewAnimation:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimation
+                        duration:(NSTimeInterval)duration
+{
+    
+    if(isTransitioning)
+        return;
+    
+    if(key == nil)
+        return;
+    
+    if([key isEqualToString:self.activeViewControllerKey]){
+        
+        return;
+        
+    }
+            
+    FJTransitionControllerMetaData* metadata = [self _metaDataForKey:key];
+    UIViewController* vc = metadata.viewController;
+    UIViewController* viewControllerToDisplay = [metadata viewControllerToDisplay];
+    
+    if(vc == nil){
+        
+        ALWAYS_ASSERT;
+        
+    }
+    
+    [vc setTransitionController:self];
+    [viewControllerToDisplay setTransitionController:self]; //just in case it is a nav
+    [self _addToViewControllerKeyHistory:key];
+    
+    FJTransitionControllerMetaData* lastMetadata = [self _metaDataForKey:self.lastViewControllerKey];
+    //UIViewController* lastVC = lastMetadata.viewController;
+    UIViewController* viewControllerToRemove = [lastMetadata viewControllerToDisplay];
+    
+    //Lock Transition Controller
+    self.isTransitioning = YES;
+    
+    [viewControllerToDisplay.view setFrame:self.view.bounds];
+    setupBlock(viewControllerToDisplay);
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        
+        viewControllerToDisplay.view.userInteractionEnabled = NO;
+        viewControllerToRemove.view.userInteractionEnabled = NO;
+        
+        if([self.delegate respondsToSelector:@selector(transitionController:willLoadViewController:animated:)])
+            [self.delegate transitionController:self willLoadViewController:viewControllerToDisplay animated:YES];
+        
+        if(!viewOnTop && viewControllerToRemove)
+            [self.view insertSubview:viewControllerToDisplay.view belowSubview:viewControllerToRemove.view];
+        else
+            [self.view addSubview:viewControllerToDisplay.view];       
+        
+        [viewControllerToDisplay viewWillAppear:YES];
+        [viewControllerToRemove viewWillDisappear:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            
+            [viewControllerToRemove viewDidDisappear:YES];
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+                [viewControllerToDisplay viewDidAppear:YES];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                NSInvocation *completionInvocation = [[NSInvocation alloc] init];
+                [completionInvocation setTarget:self];
+                [completionInvocation setSelector:@selector(fireCompletionBlockWithAppearingViewController::)];
+                [completionInvocation setArgument:viewControllerToDisplay atIndex:2];
+                [completionInvocation setArgument:viewControllerToRemove atIndex:3];
+                
+                [NSTimer scheduledTimerWithTimeInterval:duration invocation:completionInvocation repeats:NO];
+                [[[viewControllerToDisplay view] layer] addAnimation:appearingViewAnimation forKey:@"transitionAnimation"];
+                [[[viewControllerToRemove view] layer] addAnimation:disappearingViewAnimation forKey:@"transitionAnimation"];
+                
+            });
+            
+        });
+        
+    });
+
+    
+}
+
+- (void)fireCompletionBlockWithAppearingViewController:(UIViewController*)viewControllerToDisplay disappearingViewController:(UIViewController*)viewControllerToRemove {
+     //Unlock Transition Controller
+     self.isTransitioning = NO;
+     
+     if([self.delegate respondsToSelector:@selector(transitionController:didLoadViewController:animated:)])
+         [self.delegate transitionController:self didLoadViewController:viewControllerToDisplay animated:NO];
+     
+     viewControllerToDisplay.view.userInteractionEnabled = YES;
+     viewControllerToRemove.view.userInteractionEnabled = YES;
+     [viewControllerToRemove.view removeFromSuperview];
+
 }
 
 #pragma mark -

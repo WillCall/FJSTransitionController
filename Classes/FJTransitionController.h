@@ -56,6 +56,7 @@ void setViewControllerCenterPoint(FJPosition position, UIViewController* viewcon
 
 /****************************************************************************/
 
+typedef void(^TransitionTimerBlock)(void);
 
 @interface FJTransitionController : UIViewController {
 
@@ -67,10 +68,16 @@ void setViewControllerCenterPoint(FJPosition position, UIViewController* viewcon
 	BOOL isTransitioning;
         
     id<FJTransitionControllerDelegate> delegate;
-
+    
+    @private
+    
+    TransitionTimerBlock timerBlock;
+    
+    
 }
 @property (nonatomic, assign) id<FJTransitionControllerDelegate> delegate;
 @property (nonatomic) NSTimeInterval transitionDuration;
+@property (nonatomic, copy) TransitionTimerBlock timerBlock;
 
 /****************************************************************************/
 /* 
@@ -112,15 +119,11 @@ void setViewControllerCenterPoint(FJPosition position, UIViewController* viewcon
 
 
 //OMG, I can get really fancy with my own animations!
-//TODO: implement
-
-/*
 - (void)loadViewControllerForKey:(NSString*)key
               appearingViewOnTop:(BOOL)viewOnTop
                       setupBlock:(void (^)(UIViewController* appearingViewController))setupBlock 
-     appearingViewAnimationBlock:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimationBlock 
-  disappearingViewAnimationBlock:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimationBlock;
-*/
+     appearingViewAnimation:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimation 
+  disappearingViewAnimation:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimation;
 
 /****************************************************************************/
 /*
