@@ -122,8 +122,10 @@ typedef void(^TransitionTimerBlock)(void);
 - (void)loadViewControllerForKey:(NSString*)key
               appearingViewOnTop:(BOOL)viewOnTop
                       setupBlock:(void (^)(UIViewController* appearingViewController))setupBlock 
-     appearingViewAnimation:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimation 
-  disappearingViewAnimation:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimation;
+          appearingViewAnimation:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimation 
+          appearingViewFinalRect:(CGRect (^)(UIViewController* appearingViewController))appearingViewFinalRect 
+       disappearingViewAnimation:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimation
+       disappearingViewFinalRect:(CGRect (^)(UIViewController* disappearingViewController))disappearingViewFinalRect; 
 
 /****************************************************************************/
 /*

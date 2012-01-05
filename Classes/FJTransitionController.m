@@ -684,8 +684,9 @@ static NSMutableDictionary* _controllers = nil;
               appearingViewOnTop:(BOOL)viewOnTop
                       setupBlock:(void (^)(UIViewController* appearingViewController))setupBlock 
           appearingViewAnimation:(CAAnimation* (^)(UIViewController* appearingViewController))appearingViewAnimation 
+          appearingViewFinalRect:(CGRect (^)(UIViewController* appearingViewController))appearingViewFinalRect 
        disappearingViewAnimation:(CAAnimation* (^)(UIViewController* disappearingViewController))disappearingViewAnimation
-                        duration:(NSTimeInterval)duration
+       disappearingViewFinalRect:(CGRect (^)(UIViewController* disappearingViewController))disappearingViewFinalRect 
 {
     
     if(isTransitioning)
@@ -748,15 +749,28 @@ static NSMutableDictionary* _controllers = nil;
             }
             
             dispatch_async(dispatch_get_main_queue(), ^(void) {
-                NSInvocation *completionInvocation = [[NSInvocation alloc] init];
-                [completionInvocation setTarget:self];
-                [completionInvocation setSelector:@selector(fireCompletionBlockWithAppearingViewController::)];
-                [completionInvocation setArgument:viewControllerToDisplay atIndex:2];
-                [completionInvocation setArgument:viewControllerToRemove atIndex:3];
+//                NSInvocation *completionInvocation = [[NSInvocation alloc] init];
+//                [completionInvocation setTarget:self];
+//                [completionInvocation setSelector:@selector(fireCompletionBlockWithAppearingViewController::)];
+//                [completionInvocation setArgument:viewControllerToDisplay atIndex:2];
+//                [completionInvocation setArgument:viewControllerToRemove atIndex:3];
                 
-                [NSTimer scheduledTimerWithTimeInterval:duration invocation:completionInvocation repeats:NO];
-                [[[viewControllerToDisplay view] layer] addAnimation:appearingViewAnimation forKey:@"transitionAnimation"];
-                [[[viewControllerToRemove view] layer] addAnimation:disappearingViewAnimation forKey:@"transitionAnimation"];
+                NSDictionary *completionData = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                viewControllerToDisplay, @"viewControllerToDisplay",
+//                                                appearingViewFinalRect, @"viewControllerToDisplayFinalRect",
+                                                viewControllerToRemove, @"viewControllerToRemove",
+//                                                disappearingViewFinalRect, @"viewControllerToRemoveFinalRect",
+                                                nil];
+                
+//                [NSTimer scheduledTimerWithTimeInterval:duration invocation:completionInvocation repeats:NO];
+                viewControllerToDisplay.view.frame = appearingViewFinalRect(viewControllerToDisplay);
+                [[[viewControllerToDisplay view] layer] addAnimation:appearingViewAnimation(viewControllerToDisplay) forKey:@"transitionAnimation"];
+                
+                CAAnimation *disappearingAnimation = disappearingViewAnimation(viewControllerToRemove);
+                viewControllerToRemove.view.frame = disappearingViewFinalRect(viewControllerToRemove);
+                [[[viewControllerToRemove view] layer] addAnimation:disappearingAnimation forKey:@"transitionAnimation"];
+                [NSTimer scheduledTimerWithTimeInterval:disappearingAnimation.duration target:self selector:@selector(fireCompletionBlockWithCompletionData:) userInfo:completionData repeats:NO];
+
                 
             });
             
@@ -767,17 +781,20 @@ static NSMutableDictionary* _controllers = nil;
     
 }
 
-- (void)fireCompletionBlockWithAppearingViewController:(UIViewController*)viewControllerToDisplay disappearingViewController:(UIViewController*)viewControllerToRemove {
-     //Unlock Transition Controller
-     self.isTransitioning = NO;
-     
-     if([self.delegate respondsToSelector:@selector(transitionController:didLoadViewController:animated:)])
-         [self.delegate transitionController:self didLoadViewController:viewControllerToDisplay animated:NO];
-     
-     viewControllerToDisplay.view.userInteractionEnabled = YES;
-     viewControllerToRemove.view.userInteractionEnabled = YES;
-     [viewControllerToRemove.view removeFromSuperview];
+- (void)fireCompletionBlockWithCompletionData:(NSTimer*)timer {
+    NSDictionary *completionData = (NSDictionary*)timer.userInfo;
+    NSLog(@"Timer firing after animation");
+    UIViewController *viewControllerToDisplay = [completionData objectForKey:@"viewControllerToDisplay"];
+    UIViewController *viewControllerToRemove = [completionData objectForKey:@"viewControllerToRemove"];
+    //Unlock Transition Controller
+    self.isTransitioning = NO;
 
+    if([self.delegate respondsToSelector:@selector(transitionController:didLoadViewController:animated:)])
+        [self.delegate transitionController:self didLoadViewController:viewControllerToDisplay animated:NO];
+
+    viewControllerToDisplay.view.userInteractionEnabled = YES;
+    viewControllerToRemove.view.userInteractionEnabled = YES;
+    [viewControllerToRemove.view removeFromSuperview];
 }
 
 #pragma mark -
