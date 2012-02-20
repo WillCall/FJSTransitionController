@@ -641,10 +641,6 @@ static NSMutableDictionary* _controllers = nil;
 
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             
-            [viewControllerToRemove viewDidDisappear:YES];
-            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
-                [viewControllerToDisplay viewDidAppear:YES];
-            }
             
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 
@@ -657,7 +653,11 @@ static NSMutableDictionary* _controllers = nil;
                                      disappearingViewAnimationBlock(viewControllerToRemove);
                                      
                                  } completion:^(BOOL finished) {
-                                     
+                                     [viewControllerToRemove viewDidDisappear:YES];
+                                     if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+                                         [viewControllerToDisplay viewDidAppear:YES];
+                                     }
+
                                      //Unlock Transition Controller
                                      self.isTransitioning = NO;
                                      
@@ -743,10 +743,6 @@ static NSMutableDictionary* _controllers = nil;
         
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             
-            [viewControllerToRemove viewDidDisappear:YES];
-            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
-                [viewControllerToDisplay viewDidAppear:YES];
-            }
             
             dispatch_async(dispatch_get_main_queue(), ^(void) {
 //                NSInvocation *completionInvocation = [[NSInvocation alloc] init];
@@ -786,8 +782,12 @@ static NSMutableDictionary* _controllers = nil;
     NSLog(@"Timer firing after animation");
     UIViewController *viewControllerToDisplay = [completionData objectForKey:@"viewControllerToDisplay"];
     UIViewController *viewControllerToRemove = [completionData objectForKey:@"viewControllerToRemove"];
-    //Unlock Transition Controller
     self.isTransitioning = NO;
+
+    [viewControllerToRemove viewDidDisappear:YES];
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+        [viewControllerToDisplay viewDidAppear:YES];
+    }
 
     if([self.delegate respondsToSelector:@selector(transitionController:didLoadViewController:animated:)])
         [self.delegate transitionController:self didLoadViewController:viewControllerToDisplay animated:NO];
@@ -821,9 +821,9 @@ static NSMutableDictionary* _controllers = nil;
         
 		//if a vc is offscreen, kill it. I am ruthless
 		if(eachKey != self.activeViewControllerKey){
-			
-            [self releaseViewControllerForKey:eachKey]; //poof!
-			
+			if ([(FJTransitionControllerMetaData*)[self.controllerData objectForKey:eachKey] nibName] != nil) {
+                [self releaseViewControllerForKey:eachKey]; //poof!
+            }
 		}
 	}    
 }
