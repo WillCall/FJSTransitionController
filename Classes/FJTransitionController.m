@@ -460,7 +460,6 @@ static NSMutableDictionary* _controllers = nil;
     [self _setViewControllerMetaData:metadata forKey:key];
     [metadata release];
 	
-	
 }
 
 - (void)setViewControllerWithClass:(Class)viewControllerClass forKey:(NSString*)key withNavigationController:(BOOL)useNavigationController{
