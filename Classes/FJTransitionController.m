@@ -548,9 +548,9 @@ static NSMutableDictionary* _controllers = nil;
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             
             [viewControllerToRemove viewDidDisappear:YES];
-            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+//            if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
                 [viewControllerToDisplay viewDidAppear:YES];
-            }
+//            }
 
             //Unlock Transition Controller
             self.isTransitioning = NO;
@@ -653,9 +653,9 @@ static NSMutableDictionary* _controllers = nil;
                                      
                                  } completion:^(BOOL finished) {
                                      [viewControllerToRemove viewDidDisappear:YES];
-                                     if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+//                                     if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
                                          [viewControllerToDisplay viewDidAppear:YES];
-                                     }
+//                                     }
 
                                      //Unlock Transition Controller
                                      self.isTransitioning = NO;
@@ -776,6 +776,10 @@ static NSMutableDictionary* _controllers = nil;
     
 }
 
+-(BOOL)automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers {
+    return NO;
+}
+
 - (void)fireCompletionBlockWithCompletionData:(NSTimer*)timer {
     NSDictionary *completionData = (NSDictionary*)timer.userInfo;
     NSLog(@"Timer firing after animation");
@@ -784,9 +788,9 @@ static NSMutableDictionary* _controllers = nil;
     self.isTransitioning = NO;
 
     [viewControllerToRemove viewDidDisappear:YES];
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
+//    if ([[[UIDevice currentDevice] systemVersion] compare:@"5.0"] == NSOrderedAscending) {
         [viewControllerToDisplay viewDidAppear:YES];
-    }
+//    }
 
     if([self.delegate respondsToSelector:@selector(transitionController:didLoadViewController:animated:)])
         [self.delegate transitionController:self didLoadViewController:viewControllerToDisplay animated:NO];
