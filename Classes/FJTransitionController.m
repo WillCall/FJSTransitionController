@@ -831,9 +831,11 @@ static NSMutableDictionary* _controllers = nil;
 	}    
 }
 
-
-
-
-
+- (NSUInteger)supportedInterfaceOrientations {
+    if (self.activeViewController.supportedInterfaceOrientations) {
+        return self.activeViewController.supportedInterfaceOrientations;
+    }
+    return UIInterfaceOrientationMaskAll;
+}
 
 @end
